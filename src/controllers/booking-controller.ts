@@ -6,12 +6,15 @@ import httpStatus from "http-status";
 export async function getBooking(req:AuthenticatedRequest, res:Response) {
 
     try {
-       
+        const { userId } = req;
+        const result = await bookingService.getBooking(userId)
+    
+        return res.status(httpStatus.OK).send({ id:result.id, Room:result.roomId})
       } catch (error) {
         if (error.name === "NotFoundError") {
           return res.sendStatus(httpStatus.NOT_FOUND);
         }
-        return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
+        return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
       }
 }
 
