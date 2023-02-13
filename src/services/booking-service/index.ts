@@ -4,7 +4,6 @@ import ticketRepository from "@/repositories/ticket-repository";
 import { notFoundError, forbiddenError } from "@/errors";
 
 async function getBooking(userId: number) {
-
   const userBooking = await bookingRepository.getBooking(userId);
   if (!userBooking) {
     throw notFoundError();
@@ -13,7 +12,7 @@ async function getBooking(userId: number) {
   return userBooking;
 }
 
-async function postBooking(userId:number, roomId:number) {
+async function postBooking(userId: number, roomId: number) {
   const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
   if (!enrollment) {
     throw forbiddenError();
@@ -24,20 +23,19 @@ async function postBooking(userId:number, roomId:number) {
     throw forbiddenError();
   }
 
-  if (!roomId){
+  if (!roomId) {
     throw notFoundError();
   }
 
   const room = await bookingRepository.getRoom(roomId);
-  if (room.capacity <= room.Booking.length){
+  if (room.capacity <= room.Booking.length) {
     throw forbiddenError();
   }
 
   return bookingRepository.postBooking(roomId, userId);
 }
 
-async function putBooking(userId:number, roomId:number, bookingId:number) {
-
+async function putBooking(userId: number, roomId: number, bookingId: number) {
   const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
   if (!enrollment) {
     throw forbiddenError();
@@ -48,21 +46,21 @@ async function putBooking(userId:number, roomId:number, bookingId:number) {
     throw forbiddenError();
   }
 
-  if (!roomId){
+  if (!roomId) {
     throw notFoundError();
   }
 
   const room = await bookingRepository.getRoom(roomId);
-  if (room.capacity <= room.Booking.length){
+  if (room.capacity <= room.Booking.length) {
     throw forbiddenError();
   }
 
-  if(!bookingId){
+  if(!bookingId) {
     throw notFoundError();
   }
 
   const booking = await bookingRepository.getBooking(userId);
-  if (!booking){
+  if (!booking) {
     throw notFoundError();
   }
 
