@@ -37,12 +37,17 @@ export async function postBooking(req:AuthenticatedRequest, res:Response) {
 
 export async function putBooking(req:AuthenticatedRequest, res:Response) {
     
-    try {
-       
-      } catch (error) {
-        if (error.name === "NotFoundError") {
-          return res.sendStatus(httpStatus.NOT_FOUND);
-        }
-        return res.sendStatus(httpStatus.FORBIDDEN);
+  try {
+    const { userId } = req;
+    const { roomId } = req.body;
+    const { bookingId }  = req.params
+
+    const updateBooking = await bookingService.putBooking(userId, roomId, Number(bookingId));
+    return res.status(httpStatus.OK).send(updateBooking);
+    } catch (error) {
+      if (error.name === "NotFoundError") {
+        return res.sendStatus(httpStatus.NOT_FOUND);
       }
+      return res.sendStatus(httpStatus.FORBIDDEN);
+    }
 }
