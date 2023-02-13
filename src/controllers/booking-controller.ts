@@ -14,21 +14,26 @@ export async function getBooking(req:AuthenticatedRequest, res:Response) {
         if (error.name === "NotFoundError") {
           return res.sendStatus(httpStatus.NOT_FOUND);
         }
-        return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+        return res.sendStatus(httpStatus.FORBIDDEN);
       }
 }
 
 export async function postBooking(req:AuthenticatedRequest, res:Response) {
 
     try {
-      
+      const { userId } = req;
+      const {roomId} = req.body;
+
+      const createBooking = await bookingService.postBooking(userId, roomId);
+      return res.status(httpStatus.OK).send(createBooking);
       } catch (error) {
         if (error.name === "NotFoundError") {
           return res.sendStatus(httpStatus.NOT_FOUND);
         }
-        return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
+        return res.sendStatus(httpStatus.FORBIDDEN);
       }
 }
+
 
 export async function putBooking(req:AuthenticatedRequest, res:Response) {
     
@@ -38,6 +43,6 @@ export async function putBooking(req:AuthenticatedRequest, res:Response) {
         if (error.name === "NotFoundError") {
           return res.sendStatus(httpStatus.NOT_FOUND);
         }
-        return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
+        return res.sendStatus(httpStatus.FORBIDDEN);
       }
 }
